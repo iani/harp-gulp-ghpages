@@ -2,6 +2,7 @@ var gulp        = require('gulp');
 var browserSync = require('browser-sync');
 var cp          = require('child_process');
 var harp        = require('harp')
+var deploy      = require('gulp-gh-pages');
 
 gulp.task('serve', function (done) {
     harp.server('.', {
@@ -23,5 +24,14 @@ gulp.task('browser-sync', function() {
         proxy: "localhost:9000"
     });
 });
+
+/**
+ * Push build to gh-pages
+ */
+gulp.task('deploy', ['build'], function () {
+    gulp.src("./dist/*")
+        .pipe(deploy());
+});
+
 
 gulp.task('default', ['serve', 'browser-sync', 'watch']);
